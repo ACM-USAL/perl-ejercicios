@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Perl-Introducción</title>
+
+		<meta name="description" content="Hacer las cosas fáciles fácilmente y las difíciles posibles">
+		<meta name="author" content="ACM Student Chapter Universidad de Salamanca">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+				<section  data-background="#000">
+					<a class="image" href="http://acm.org" target="_blank">
+						<img src="img/escudo+texto.png" alt="Meny">
+					</a>
+					<p style="color: #fff">University of Salamanca ACM student chapter</p>
+				</section>
+				<section>
+					<p>¿Qué es la Association for Computer Machinery?</p>
+					<a class="image" href="http://acm.org" target="_blank">
+						<img src="img/servers3.jpg" alt="Meny">
+					</a>
+				</section>
+				<section data-transition="linear">
+					<h1>Perl</h1>
+					<h3>Haciendo las cosas fáciles fácilmente y las difíciles posibles</h3>
+					<p>
+						<small><a href="http://acmusal.org.es">ACM USAL</a> / <a href="http://twitter.com/acmsalamanca">@acmSalamanca</a></small>
+					</p>
+				</section>
+
+				<section data-transition="linear">
+					<h2>Perliendo el miedo</h2>
+					<p>
+						Perl es un lenguaje pensado para ser sencillo, potente y flexible.
+					</p>
+					<p>
+						Favorece al desarrollador experto. El aprendiz lo tiene más difícil que en otros lenguajes
+					</p>
+				</section>
+
+				<section data-transition="linear">
+					<section>
+						<h2>Características</h2>
+						<ul>
+							<li>Perl es rápido</li>
+							<li>Tiene una sintaxis reducida y limpia, pero difícil para el principiante</li>
+							<li>Es un lenguaje de alto nivel</li>
+							<li>Tiene una gran comunidad por detrás</li>
+							<li>Tiene como objetivo ahorrar tiempo al desarrollador</li>
+							<li>Es multipropósito</li>
+							<li>Multiparadigma</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Perl es rápido</h2>
+						<p>El código es compilado a un <em>bytecode</em> que es ejecutado por la Perl Virtual Machine</p>
+					</section>
+					<section>
+						<h2>Sintaxis simple, pero difícil para el principiante</h2>
+						<p>Ejemplo de código</p>
+						<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
+#!/usr/bin/perl
+open(my $file, "/var/www/administracion/download/$filename");
+my $newname = $filename;
+$newname =~s/\./\.nocomment\./ig;
+						</code></pre>
+					</section>
+					<section>
+						<h2>Es un lenguaje de alto nivel</h2>
+						<p>Ahorra al programador líneas de código</p>
+						<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
+$newname =~s/\./\.nocomment\./ig;
+</code></pre>
+					</section>
+					<section>
+						<h2>Es multipropósito</h2>
+						<blockquote>
+						&ldquo;Hay muy pocas cosas que no puedas hacer con Perl. Por ejemplo, no es recomendable implementar un driver de interrupciones a nivel de micronúcleo con Perl (a pesar de que se ha hecho).&rdquo;
+					</blockquote>
+					</section>
+					<section>
+						<h2>Es multiparadigma</h2>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<h2>¿Para qué sirve Perl?</h2>
+					<ul>
+						<li>Procesamiento de ficheros</li>
+						<li>Para GCI</li>
+						<li>Para administrar sistemas</li>
+						<li>Para lo que quieras</li>
+					</ul>
+				</section>
+
+				<section data-transition="linear">
+					<h2>Primer programa</h2>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+print "Hello, ACM!";
+						</code></pre>
+				</section>
+				<section data-transition="linear">
+					<section>
+						<h2>Tipos de datos</h2>
+						<p>Perl cuenta únicamente con dos tipos de datos:</p>
+						<ui>
+							<li>$calar</li>
+							<li>@array</li>
+						</ui>
+						<p>Aporta flexibilidad y a partir de ellos se construyen tipos más complejos</p>
+					</section>
+					<section>
+						<h3>$calar</h3>
+						<p>Cualquier representación de un valor 'unitario'</p>
+						<p>No es necesario indicar el tipo de dato, Perl se adapta al contexto</p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+$numero = 10;
+$cadena = '20';
+print $numero + $cadena;
+print $cadena . $numero;
+						</code></pre>
+						<p>Tampoco es necesario especificar el tipo de número, todos tienen la misma representación interna</p>
+						<p>Valores nulos (0, "") se utilizan como tipo falso booleano</p>
+					</section>
+					<section>
+						<h3>@rray</h3>
+						<p>Cualquier colección de valores escalares</p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+$numero = 10;
+$cadena = '20';
+@datos = ($numero, $cadena);
+print $datos[0];
+@nombres = qw/Ringo Paul John George/;
+$elementos = @nombres;
+						</code></pre>
+					</section>
+					<section>
+						<h3>Gran cantidad de operaciones para un array</h3>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+@nombres = qw/Ringo Paul John George/;
+print (pop (@nombres));
+print shift @nombres;
+						</code></pre>
+					</section>
+					<section>
+						<h3>El valor <strong>undef</strong></h3>
+						<p>Si no inicializamos una variable, contará con este valor especial, que representará un tipo de dato distinto según el contexto</p>
+							<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+	#!/usr/bin/env perl
+	$var;
+	print $var;
+	$var2 = $var + 1;
+							</code></pre>
+						<p>Con  <code>defined $variable	;</code> podemos comprobar si una variable se encuentra definida</p>
+					</section>
+					<section>
+						<h3>Gestión de la memoria</h3>
+						<p>Perl trabaja con referencias a elementos en memoria, y realiza la gestión mediante un contador. No es necesario reservar ni liberar espacio</p>
+						<p>El límite lo marca la memoria</p>
+					</section>
+					<section>
+						<h3>¿Y qué pasa con los ámbitos de alcance?</h3>
+						<p>Las variables tienen como ámbito el bloque en el que han sido declaradas y los inferiores</p>
+						<h4>¿Y las variables privadas?</h4>
+						<p>Con el operador <code>my</code> se declaran variables privadas. Con <code>state</code> además mantienen su valor entre invocaciones a una subrutina</p>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<h2>El contexto es importante</h2>
+					<p>La flexibilidad del lenguaje permite que una variable se comporte de una forma u otra dependiendo del momento</p>
+					<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+	#!/usr/bin/env perl
+	$var = 10;
+	@array = $var;
+	$var = @array;
+					</code></pre>
+					<p>Herramienta muy potente, pero peligrosa si no se utiliza bien</p>
+				</section>
+				<section data-transition="linear">
+					<section>
+						<h2>Perl 101: Lo más básico</h2>
+					</section>
+					<section>
+						<h3>Estructuras de control</h3>
+						<p><code>if</code> y <code>unless</code></p>
+						<table>
+							<td>
+								<tr>
+									<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+if('George' gt 'Lennon'){
+	print 'It was true';
+}else{
+	print "It wasn't true";
+}
+					</code></pre>
+								</tr>
+
+								<tr>
+									<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+unless('George' gt 'Lennon'){
+	print "It wasn't true";
+}else{
+	print "It was true";
+}
+					</code></pre>
+								</tr>
+							</td>
+						</table>
+					</section>
+					<section>
+						<h3>Operadores lógicos</h3>
+						<table>
+							<tr>
+								<td>
+									<ul>
+										<li><code><</code>, <code>></code>, <code>>=</code>...</li>
+										<li><code>&&</code><code>||</code>, <code>!</code>...</li>
+										<li><code><=></code></li>
+										<li><code>!=</code>, <code>==</code></li>
+									</ul>
+								</td>
+								<td>
+									<ul>
+										<li><code>eq</code></li>
+										<li><code>lt</code></li>
+										<li><code>gt</code></li>
+										<li><code>le</code></li>
+									</ul>
+								</td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Bucles</h3>
+						<p><code>while</code>, <code>do</code>, <code>until</code></p>
+						<table>
+							<td>
+								<tr>
+									<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+$var;
+while($var < 10){
+	$var++;
+	print $var;
+}
+					</code></pre>
+								</tr>
+								<tr>
+									<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+$var;
+until($var >= 10){
+	$var++;
+	print $var;
+}
+					</code></pre>
+								</tr>
+								<tr>
+									<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+$var;
+do{
+	$var++;
+	print $var;
+}until($var >= 10);
+					</code></pre>
+								</tr>
+							</td>
+						</table>
+					</section>
+					<section>
+						<p><code>for</code>, <code>foreach</code></p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+$var;
+for($var=0;$var<10;$var=$var+2){
+	print $var;
+}
+					</code></pre>
+					<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+#!/usr/bin/env perl
+@var = qw(Foo Bar);
+foreach (@var){
+	print $_ . "\n";
+}
+					</code></pre>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<section>
+						<h2>Subrutinas</h2>
+						<p>Bloques de código invocables</p>
+						<p>Mucho más flexibles que en otros lenguajes</p>
+					</section>
+					<section>
+						<h3>Argumentos</h3>
+						<p>A diferencia de otros lenguajes, en Perl no se definen los argumentos que una función toma. El array @_ los almacena</p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+sub routine{
+	foreach $number (@_){
+		print 'The number is' . $number . "\n";
+	}
+}       
+&routine (3,2,1);
+</code></pre>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<section>
+						<h2>Un poco más avanzado</h2>
+						<p>Procesado de cadenas de texto</p>
+					</section>
+					<section>
+						<h2>Expresiones regulares</h2>
+						<p>Cadenas de caracteres que conforman un patrón. Permiten procesar fácilmente cadenas de texto</p>
+					</section>
+					<section>
+						<h3>Expresiones regulares</h3>
+						<p>Perl toma todo el potencial de herramientas como <em>awk</em> o <em>sed</em> y lo amplía</p>
+						<p>Un ejemplo básico</p>
+<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+$var = "usuario:x:100:101::/home/usuario:/bin/bash";
+if($var =~ /[a-zA-Z][a-zA-Z0-9]+:.*:\d+:\d+:.*:\/.*:\/.*/){
+	print "Es log\n";
+}else{
+	print "No es passwd\n"
+}
+</code></pre>
+					</section>
+					<section>
+						<h3>Regex overpowered</h3>
+						<p>Existe una gran cantidad de recursos dentro de Perl para potenciar el potencial de las expresiones regulares</p>
+						<ul>
+							<li><code>/[a-zA-Z][a-zA-Z0-9]+:    .*   :\d+   :\d+   :.*   :\/.*   :\/.*/x</code></li>
+							<li><code>/[a-zA-Z][a-zA-Z0-9]+:.*:\d+:\d+:.*:\/.*:\/.*/i</code></li>
+							<li><code>Atajos: \i, \d, \w, \s</code></li>
+						</ul>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<section>
+						<h2>Ficheros</h2>
+					</section>
+					<section>
+						<h3>Ficheros: básico</h3>
+						<p>El funcionamiento es muy similar a los ficheros en UNIX. Se almacena en un descriptor la información de acceso al fichero y a través del mismo se realizan todas las operaciones</p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+open $fichero, '/home/martin/datos.txt';
+print $fichero 'Hola!' . "\n";
+close $fichero;
+</code></pre>
+					</section>
+					<section>
+						<h3>Muchas más opciones: Procesamiento de ficheros</h3>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+open $fichero, '<', '/home/martin/datos.txt';
+while (<$fichero>){
+	print $_;
+}
+</code></pre>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<section data-transition="linear">
+						<h2>Perl orientado a objetos</h2>
+						<p>Perl es un lenguaje orientado a objetos <em>cuando el programador lo desea</em></p>
+						<p>Permite aprovechar sus ventajas sin forzar al programador a utilizarlo</p>
+					</section>
+					<section data-transition="linear">
+						<h3>Funcionamiento</h3>
+						<p>Tal y como ocurre en otros lenguajes, un objeto es una colección de referencias. En caso de Perl</p>
+						<p>Ejemplo de una clase con un método <br><pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+package Utils;
+sub new{
+	my $referencia = {};
+	bless $referencia;
+	return $referencia;
+}
+sub suma{
+	print $_[0] + $_[1];
+}
+</code></pre></p>
+						<p>Permite aprovechar sus ventajas sin forzar al programador a utilizarlo</p>
+					</section>
+					<section>
+						<h3>Utilización</h3>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+use Utils;
+$u = Utils->new();
+$u->suma(1,2);
+</code></pre>
+					</section>
+					<section>
+						<h2>Módulos</h2>
+						<ul>
+							<li>Una de los grandes puntos a favor de Perl es la comunidad alrededor del lenguaje</li>
+							<li>Como máximo exponente destaca <a href="http://www.cpan.org/">CPAN</a><p>CPAN es la biblioteca de código más grande del mundo, con una comunidad mejorándola y aportando nuevo código cada día</p></li>
+						</ul>
+					</section>
+					<section>
+						<h3>Utilización de módulos</h3>
+						<p>Los módulos instalados se incluyen con la directiva <code>use</code></p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+use DateTime;
+$dt = DateTime->new(
+      year       => 1964,
+      month      => 10,
+      day        => 16,
+      hour       => 16,
+      minute     => 12,
+      second     => 47,
+      nanosecond => 500000000,
+      time_zone  => 'Asia/Taipei',
+  );
+print $dt->year;
+</code></pre>
+					</section>
+					<section>
+						<h3>Instalación de módulos</h3>
+						<p>Los módulos pueden ser descargados directamente desde la web del autor o CPAN. Sin embargo, la opción más sencilla es utilizar el módulo preinstalado <code>cpan</code> o alguna de sus variantes</p>
+					</section>
+				</section>
+				<section data-transition="linear">
+					<section>
+						<h3>Errores</h3>
+						<p>Perl es capaz de gestionar excepciones y errores graves, así como informar de forma clara sobre los mismos</p>
+						<pre><code data-trim contenteditable style="font-size: 28px; margin-top: 20px;">
+open $archivo, '>', '/etc/passwd' or die "No he podido abrir el fichero";
+close $archivo;
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Un par de demos más...</h2>
+					</section>
+					<section>
+						<img src="img/exploits_of_a_mom.png">
+						<h2>Cuidado con las inyecciones!</h2>
+					</section>
+					<section>
+						<h3>La inyección SQL</h3>
+						<img src="img/sql_injection.jpg">
+					</section>
+				</section>
+				<section>
+					<h2>Fork us on GitHub!</h2>
+					<a class="image" href="http://github.com/acm-usal" target="_blank">
+						<img src="img/nyantocat.gif" alt="Meny">
+					</a>
+				</section>
+				<section>
+					<h2>Y próximamente...</h2>
+				</section>
+				<section data-background="#007777">
+					<img src="img/arduino.png">
+				</section>
+				<section data-background="#007777">
+					<img src="img/arduino_uno.png">
+					<p>Plataforma de hardware libre sencilla de utilizar</p>
+				</section>
+				<section>
+				<section>
+					<h2>Para no perderse nada, síguenos</h2>
+					<ul>
+						<li><img height="30px" src="img/twitter.png"> <a href="twitter.com/acmsalamanca">@acmsalamanca</a></li>
+						<li><img height="30px" src="img/facebook.png"> <a href="facebook.com/USAL"> facebook.com/ACMUSAL</a></li>
+						<li><a href="http://acmusal.org.es">acmusal.org.es</li>
+					</ul>
+				</section>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

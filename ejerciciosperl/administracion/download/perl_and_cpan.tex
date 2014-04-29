@@ -1,0 +1,475 @@
+	% !TEX TS-program = pdflatex
+	% !TEX encoding = UTF-8 Unicode
+	
+	% Example of the Memoir class, an alternative to the default LaTeX classes such as article and book, with many added features built into the class itself.
+	
+	\documentclass[12pt,a4paper]{memoir} % for a long document
+	%\documentclass[12pt,a4paper,article]{memoir} % for a short document
+	
+	\usepackage[utf8]{inputenc} % set input encoding to utf8
+	\usepackage[spanish]{babel}
+	\usepackage{graphicx}
+	
+	% Perl code formatting package
+	\usepackage{listings}
+	\usepackage{alltt}
+	\newcommand{\oops}{{lstlisting}[frame=single, showspaces=false, showstrinspaces=false, breaklines=true]}
+	
+	% Don't forget to read the Memoir manual: memman.pdf
+	
+	%%% Examples of Memoir customization
+	%%% enable, disable or adjust these as desired
+	
+	%%% PAGE DIMENSIONS
+	% Set up the paper to be as close as possible to both A4 & letter:
+	\settrimmedsize{11in}{210mm}{*} % letter = 11in tall; a4 = 210mm wide
+	\setlength{\trimtop}{0pt}
+	\setlength{\trimedge}{\stockwidth}
+	\addtolength{\trimedge}{-\paperwidth}
+	\settypeblocksize{*}{\lxvchars}{1.618} % we want to the text block to have golden proportionals
+	\setulmargins{50pt}{*}{*} % 50pt upper margins
+	\setlrmargins{*}{*}{0.618} % golden ratio again for left/right margins
+	\setheaderspaces{*}{*}{1.618}
+	\checkandfixthelayout 
+	% This is from memman.pdf
+	
+	
+	%%% \maketitle CUSTOMISATION
+	% For more than trivial changes, you may as well do it yourself in a titlepage environment
+	\pretitle{\begin{center}\sffamily\huge\MakeUppercase}
+	\posttitle{\par\end{center}\vskip 0.5em}
+	
+	%%% ToC (table of contents) APPEARANCE
+	\maxtocdepth{subsection} % include subsections
+	\renewcommand{\cftchapterpagefont}{}
+	\renewcommand{\cftchapterfont}{}     % no bold!
+	
+	%%% HEADERS & FOOTERS
+	\pagestyle{ruled} % try also: empty , plain , headings , ruled , Ruled , companion
+	
+	%%% CHAPTERS
+	\chapterstyle{hangnum} % try also: default , section , hangnum , companion , article, demo
+	
+	\renewcommand{\chaptitlefont}{\Huge\sffamily\raggedright} % set sans serif chapter title font
+	\renewcommand{\chapnumfont}{\Huge\sffamily\raggedright} % set sans serif chapter number font
+	
+	%%% SECTIONS
+	\hangsecnum % hang the section numbers into the margin to match \chapterstyle{hangnum}
+	\maxsecnumdepth{subsection} % number subsections
+	
+	\setsecheadstyle{\Large\sffamily\raggedright} % set sans serif section font
+	\setsubsecheadstyle{\large\sffamily\raggedright} % set sans serif subsection font
+	
+	%% END Memoir customization
+	
+	\title{\textbf{El lenguaje Perl y CPAN}}
+	\author{Diego Martín Arroyo}
+	\date{14 de marzo de 2014}
+	%%% BEGIN DOCUMENT
+	\begin{document}
+	
+	\maketitle
+	\tableofcontents* % the asterisk means that the contents itself isn't put into the ToC
+	
+	\chapter{Introducción}
+	\section{Orígenes}
+	\paragraph
+	Los orígenes de Perl se remontan al año 1987, cuando Larry Wall vio que awk no era lo suficientemente potente como para generar algunos informes sobre una jerarquía de archivos tipo Usenet para un sistema de reporte de errores. Larry decide en este momento superar esta limitación creando una herramienta de propósito general que pudiera tener al menos una aplicación más. El resultado fue Perl versión 0.
+	\subparagraph
+	La idea de Larry era combinar la potencia de herramientas como \emph{grep}, \emph{cut}, \emph{sort} y \emph{sed} y la sencillez de desarrollo en lenguajes como shell o \emph{awk} sin tener que recurrir a herramientas como C o C++, que si bien tienen un potencial casi ilimitado, son más complicadas de utilizar. El objetivo era combinar las ventajas de ambos, consiguiendo un lenguaje sencillo de utilizar\footnote{Aunque, como veremos más tarde, no tan fácil de aprender.}, prácticamente ilimitado y rápido.
+	\subparagraph
+	El lenguaje es distribuido libremente a través de Usenet, recibiendo una gran acogida y sugerencias para mejorarlo. Progresivamente se ha formado una gran comunidad de desarrollo alrededor del lenguaje, con grandes cantidades de documentación, comunidades en línea y lo más importante, implementaciones en casi cualquier sistema utilizado actualmente.\footnote{Hay incluso versiones para sistemas como MS-DOS o Windows CE}
+	\section{Consideraciones generales}
+	%Here comes a bulleted list
+	%Also, a Camel is absolutely necessary
+	Perl es un lenguaje capaz de realizar cualquier tipo de tarea, desde soluciones a problemas concretos hasta largos programas. Casi cualquier programa puede ser implementado en este lenguaje. La idea principal de Perl es crear programas que sean fáciles de crear y mantener.\\
+	Consideraciones:
+	\begin{itemize}
+	\item Perl es rápido
+	\subitem Todo desarrollador de Perl lo utiliza muy habitualmente, por lo que encuentra solución a fallos y los corrige. Además, optimiza el lenguaje para que cada vez sea más potente.
+	\item Perl es `feo'
+	\subitem A la hora de desarrollar el lenguaje, Larry favorece al desarrollador en detrimento del aprendiz, simplificando la creación de programas en perjuicio de aquellos que se están iniciando en el lenguaje. Esto se basa en la idea de que Perl \emph{sólo se aprende una vez, pero se utiliza en múltiples ocasiones}. Además, el hecho de utilizar una sintaxis más reducida ayuda al proceso de desarrollo y sobre todo a la depuración. Perl está hecho para ser \textit{usado} con facilidad, no para ser \textit{aprendido} rápidamente. Esta característica de Perl queda recogida en la portada del libro Programming Perl de O'Reilly, identificando al lenguaje con un camello, animal generalmente considerado feo, pero que es capaz de aguantar semanas de duro trabajo. \\
+	\includegraphics[scale=0.5]{./ppt/img/camel_book.png}
+	\item Perl es un lenguaje de alto nivel
+	\subitem El equivalente en Perl de un programa en C ocupa entre un 25\% y un 75\% menos. Esto facilita enormemente la detección y corrección de errores.
+	\end{itemize}
+	\subsection{¿Para qué se usa Perl?}
+	Si bien Perl es un lenguaje capaz de resolver cualquier tipo de tarea, es principalmente utilizado para desarrollar scripts CGI\footnote{Common Gateway Interface, estándar de intercambio de datos utilizado entre un servidor web y un cliente.}, aunque es también muy popular a la hora de procesar ficheros o cadenas de texto, debido a su gran flexibilidad a la hora de trabajar con expresiones regulares y archivos.
+	\subsubsection{¿Para qué \textit{no} es bueno Perl?}
+	Dado que es imposible crear un script de Perl opaco, todo el código es visible, por lo que a la hora de desarrollar software privativo no es una opción atractiva. También hay tareas para las cuales el lenguaje no es recomendable, como aplicaciones en tiempo real o de muy bajo nivel.
+	\subsection{¿Cómo se ha convertido en un lenguaje tan popular?}
+	Una de las claves del éxito de este lenguaje es la decisión de Larry de liberarlo a la comunidad de Usenet cuando el desarrollo alcanzó una estabilidad aceptable. La respuesta de la comunidad, que recibió el lenguaje con los brazos abiertos, permitió que el lenguaje creciera enormemente en poco tiempo, ayudando a Larry en el desarrollo y la portabilidad del mismo.
+	\section{El lenguaje}
+	\subsection{Crear un primer programa}
+	\paragraph
+	Los programas en Perl son creados con un editor de texto y después son ejecutados utilizando un intérprete que se encarga de convertir el script a un \textit{bytecode} que es ejecutado por el motor de Perl. En caso de que haya errores o advertencias, se muestran en el proceso de compilación.
+	\subparagraph
+	Puede parecer ineficiente el hecho de que el script sea compilado cada vez que se ejecute. Si bien las implementaciones del lenguaje consiguen que el proceso de compilación constituya una mínima fracción del tiempo total, hay soluciones para este problema, que realizan la traducción una única vez, como el módulo CGI::Fast o el módulo del servidor web Apache mod\_perl\footnote{Esta optimización sólo es apreciable en sistemas donde el script sea ejecutado muy frecuentemente, como servidores que gestionan cientos o miles de peticiones por día.}, pensados para el trabajo en servidores con GGI.
+	
+	\subsection{El `Hola, Mundo' en Perl}
+	\lstset{language=Perl, showspaces=false, showstringspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	#!/usr/bin/perl
+	print "Hello, World!\n";
+	\end{lstlisting}
+	La primera línea simplemente hace una llamada al comando del sistema \textit{perl}, que se encargará de ejecutar todo lo que venga debajo.
+	\\n representa el caracter de retorno de carro.
+	Este archivo de texto (todo programa en Perl está compuesto de archivos de texto plano) se guardará (se recomienda sin extensión\footnote{La razón de no utilizar una extensión, como .pl, que identifica generalmente los archivos de Perl es hacer que el usuario se despreocupe de la implementación del programa. Podríamos portar un programa de C a Perl y la forma de invocarlo sería exactamente la misma.}) y ejecutará tal y como cualquier orden en línea de comandos:
+	\lstset{language=sh, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	$	./helloworld
+	\end{lstlisting}
+	
+	\chapter{Tipos de datos en Perl: valores escalares y listas}
+	\section{Introducción}
+	\paragraph
+	Perl es un lenguaje débilmente tipado, el entorno se encarga de la gestión del mismo, incluyendo reserva y liberación de memoria. El intérprete conoce los requisitos de almacenamiento de cada variable del programa, trabajando con un contador de referencias que se encarga de la liberación de espacio en el momento de la pérdida del último apuntador al valor\footnote{Consecuentemente, la liberación de estructuras de datos circulares siempre será una tarea para el programador.}.
+	\newline
+	A grandes rasgos existen dos tipos de datos: valores escalares y arrays.
+	\section{Valores escalares}
+	\paragraph
+	La unidad de información más simple que Perl maneja es el dato escalar. Los valores escalares son numéricos o cadenas de texto.\\
+	Cualquier dato numérico en Perl tiene la misma constitución interna: valores en coma flotante de doble precisión\footnote{El intérprete puede utilizar internamente valores de tipo entero por razones de eficiencia, y la cláusula use integer permite al programador trabajar con enteros de la misma forma.}. Además, es posible trabajar con valores en diferentes bases con los prefijos 0 para octal, 0x para hexadecimal o 0b para binario.
+	Perl, a diferencia de otros lenguajes, representa las cadenas de texto como una única unidad de datos, en contraposición a otros lenguajes donde son considerados arrays de caracteres.
+	El lenguaje realiza una conversión automática entre valores numéricos y cadenas de texto, así como conversión entre distintos tipos de valores numéricos cuando es necesario\footnote{Por ejemplo, al acceder a elementos dentro de un array, siempre el valor será truncado para ser convertido a entero.}.
+	%Operandos
+	Perl se encuentra en el grupo de lenguajes de programación que heredan los operandos y la asociatividad de C, por lo que para cualquier iniciado en alguno de los mismos, el aprendizaje de los mismos es prácticamente trivial. Destacan los operadores nuevos `.' o `**', que concatenan cadenas de caracteres y realizan potencias respectivamente.
+	\section{Listas y arrays}
+	\paragraph
+	Una lista es una colección ordenada de valores escalares. Un array es una variable que contiene dicha lista.\footnote{Si bien un array siempre debe contener una lista, no ocurre así al contrario.}. Comparten la mayoría de operaciones.
+	%Lista
+	Acceso a elementos de un array:
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	$valor[0] = "1";
+	$valor[1] = "23";
+	$valor[2] = $aux;
+	\end{lstlisting}
+	\subsection{Operaciones con listas y array}
+	Perl facilita enormemente el trabajo con estas estructuras de datos, implementando dentro del lenguaje las operaciones de manipulación de pilas y colas \textbf{push}, \textbf{pop} (inserción y extracción a la cola del array), \textbf{shift} y \textbf{unshift} (inserción y extracción al inicio de la estructura). El operador \textbf{splice} permite la inserción de elementos en posiciones medias del array.
+	Los operadores \textbf{sort} y \textbf{reverse} ordenan los valores de la lista.
+	Se puede utilizar '\#' para obtener el índice del último elemento de un array\footnote{Importante: los índices comienzan en 0, si queremos conocer el número de ítems, tendremos que sumar 1 a este valor.}.
+	\section{Declaración de variables}
+	\paragraph
+	Los operadores \$ y @ declaran valores escalares y arrays respectivamente\footnote{Larry Wall pensó en estos símbolos debido a su semejanza con las iniciales de los dos tipos principales (\$calar, @rray).}.
+	A la hora de crear una variable de tipo escalar, basta con escribir el nombre de la variable precedido del símbolo \$. La asignación se realiza de forma directa.
+	\begin{lstlisting}[frame=single, showspaces=false]
+	$valor = 212;
+	\end{lstlisting}
+	Para crear un array hay varios métodos
+	\begin{itemize}
+	\item Trabajando por índices
+	\subitem @lista[0] = `Amanda'; @lista[1] = `Laura'; @lista[2] = `Neil'; @lista[3] = `Coraline';
+	\item Utilizando el operador lista ()
+	\subitem @lista = ("Amanda", "Laura", "Neil", "Coraline"); (Utilizando un literal de lista).
+	\item Utilizando el operador qw
+	\subitem @lista = qw(Amanda Laura Neil Coraline); \footnote{qw (\textit{quoted words}) funciona del mismo modo que el operador lista, pero permite al programador ahorrar las comillas y comas necesarias en el mismo.}
+	%Mover de aquí. Añadir each operator pg 79
+	\item Intercambiar valores entre dos listas:
+	($pedro, $marta) = ($marta, $pedro);\footnote{¿Variable auxiliar? ¿Qué es eso?}
+	\end{itemize}
+	\section{Contexto y conversión automática}
+	\paragraph
+	Perl distingue el uso de una variable como array o como valor escalar según el contexto en el que la misma se vea implicada. Por ello, una variable puede actuar en determinados casos como escalar o lista.
+	% Example here
+	Además, al igual que la conversión entre valores escalares, Perl realiza transformaciones entre valores de tipo escalar y array de forma automática. Generalmente, si un valor escalar se utiliza en un contexto de lista, se trata como una lista con un único elemento. Si una lista se trata como elemento escalar Perl devuelve el número de elementos de la lista.
+	\subsection{El valor indefinido (\textbf{undef})}
+	A diferencia de otros lenguajes donde la no inicialización de una variable puede ocasionar graves problemas, Perl asigna el valor \textbf{undef} al darse esta circunstancia. Según el contexto, \textbf{undef} podrá tener un significado u otro: es el valor 0 en un contexto numérico, palabra vacía al ser tratado como una cadena de caracteres, etcétera.\\
+	En caso de que sea completamente necesario que una variable esté definida, \textbf{defined} retorna un valor lógico indicando si la variable pasada como argumento está definida o no).
+	\subsection{Variables por defecto: \$\_ y @\_}
+	En ocasiones se puede trabajar con las variables por defecto \$\_ o @\_ (por ejemplo, si en un bucle foreach no definimos una variable, el elemento a procesar en cada iteración se almacenará en \$\_).
+	\section{Gestión de la memoria}
+	Perl se encarga de la reserva y liberación de memoria de una forma muy transparente. Utilizando un contador de referencias, se libera el espacio ocupado por una variable cuando se pierde la última referencia al mismo. El tamaño máximo de una variable es el valor máximo de memoria disponible en el sistema, por lo que es un lenguaje muy flexible en ese aspecto.
+	\section{Visibilidad y persistencia}
+	Por defecto, las variables en Perl son visibles a lo largo de todo el programa. En contraposición se pueden utilizar variables \textit{léxicas} cuyo ámbito está limitado al bloque en el que se encuentren. Es muy recomendable declarar variables de esta forma debido a que facilita la depuración del código. Para ello se utiliza el operador \textbf{my}.
+	Al finalizar una subrutina todas sus variables internas son eliminadas. Si se desea mantener el valor entre ejecuciones de alguna variable, se declarará con la palabra reservada \textbf{state}.
+	\chapter{Estructuras de control}
+	\paragraph
+	Como en todo lenguaje moderno, existen una serie de estructuras de control del flujo del programa. Estos son ejemplos cotidianos de ellas:
+	\begin{itemize}
+	\item Estructura condicional if
+	\subitem
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+	if($number gt 10){
+		print "Mayor que 10";
+	}else{
+		print "Menor que 10";
+	}
+	\end{lstlisting}
+	\item Operador ternario :?
+	$var = $aux gt 10 ? $aux : $min;
+	\item Bucle while
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false, breaklines=true]
+	while(!($number eq 10)){
+		$number += 1;
+		print $number;
+	}
+	\end{lstlisting}
+	\newpage
+	\item Bucles for y foreach\footnote{La variable no ha sido inicializada. Sin embargo el bucle funciona. Gracias al valor undefined que Perl asigna por defecto y la interpretación por contexto de un valor, Perl considera que el valor undefined de la variable es 0 en el primer incremento. Al incrementarse será 1, por lo que será completamente seguro utilizar el bucle de este modo.}
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	for($n; ($n <= 10); $n++){
+		print $n;
+	}
+	\end{lstlisting}
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	@mynames = qw(Pepe Paco Marta);
+	foreach(@mynames){
+		print $_;
+	}
+	\end{lstlisting}
+	\subitem La sentencia \textbf{last} permite detener el flujo del bucle, de forma similar a \textbf{break} en otros lenguajes. \textbf{next} es el equivalente a continue, detiene la iteración actual, pasando inmediatamente a la siguiente.
+	Existe además una sentencia no tan habitual, \textbf{redo}, que interrumpe la iteración actual, pero no evalúa la condición del bucle de nuevo.
+	\subitem El bucle \textbf{foreach} es muy útil a la hora de procesar listas o hashes. El elemento dentro del la estructura correspondiente a cada iteración queda almacenado en una variable especificada o en la variable por defecto \textbf{\$\_}. Todo cambio que se realice sobre la misma tendrá efecto en el valor de la estructura, siendo una herramienta muy potente a la hora de procesar información.
+	\newpage
+	\item Estructura condicional unless
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+	unless(!($number gt 10)){
+		print "Mayor que 10";
+	}else{
+		print "Menor que 10";
+	}
+	\end{lstlisting}
+	Trabaja de la misma forma que if, sólo que el contenido de la estructura sólo se ejecuta si la condición es falsa. El ejemplo es equivalente al ejemplo de la estructura if.
+	\item	Estructura de repetición until
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	until(($number eq 10)){
+		$number += 1;
+		print $number;
+	}
+	\end{lstlisting}
+	Es el equivalente de unless para if.
+	\item Modificadores de expresión
+	Es posible simplificar control de flujo de la siguiente forma:
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+	printf "Mayor que 10" if $n > 10;
+	\end{lstlisting}
+	\item El bloque 'Desnudo' de control
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	{
+		my $var = "Marta";
+		print $var;
+	}
+	\end{lstlisting}
+	
+	\item Operadores lógicos:\\
+	Existen todos los operadores típicos para realizar evaluación binaria y la sintaxis es idéntica a la de C\footnote{Al definirse el lenguaje, Larry quiso que un desarrollado de C no echara de menos ninguno de los operadores del lenguaje, razón por la que toda estructura de control presente en C se encuentra en Perl.}.
+	Es útil a la hora de limitar el alcance de variables.
+	\item given-when
+	Muy parecido al switch de C.
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+	given($ARGV[0]){
+		when('Ford'){
+		say 'Su nombre es Ford'; 
+		continue;
+		}
+		when ('Arthur'){
+		say 'Su nombre es Arthur';
+		}
+		default
+		say 'Su nombre es Zaphod';
+	}
+	\end{lstlisting}
+	\textbf{Continue} permite que se ejecuten el resto de bloques existentes dentro de la estructura. Default se ejecuta en caso de que no se cumpla ninguna de las otras condiciones.
+	\end{itemize}
+	
+	\chapter{Subrutinas}
+	Toda subrutina se declara utilizando la palabra reservada \textbf{sub}. A la hora de llamar a una subrutina, se utiliza el comando \&. Toda subrutina tiene un valor de retorno que bien es indicado con la palabra \textbf{return} (finalizando la ejecución de la subrutina) o será el último valor de retorno de alguna de las operaciones realizadas en la subrutina. Es posible devolver valores escalares o listas.\newline
+	Perl admite un número indefinido de argumentos, por lo que es responsabilidad del programador encargarse de que las subrutinas sean invocadas con el número de argumentos necesarios para que desempeñe su función (la variable \textbf{@\_} almacena el número de argumentos, por lo que es sencillo realizar comprobaciones).
+	Es posible omitir el operador \& cuando se invoca una subrutina siempre que no dé lugar a confusiones, dado que es detectado por el contexto de uso del nombre de la subrutina.
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+	sub marine{
+		print "We are all\n";
+		print "in a yellow subroutine";
+	}
+	\end{lstlisting}
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+&marine 'john', 'paul', 'george', 'ringo';
+	\end{lstlisting}
+	
+	
+	
+	%%Special files
+	\chapter{Ficheros y su procesamiento}
+	\paragraph
+	Una de las propiedades por las que destaca Perl es su gran capacidad para procesar archivos.
+	Para abrir un fichero necesitamos crear una variable que actúe a modo de manejador del mismo:
+	\lstset{language=Perl, showspaces=false, showstringspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	open descriptor, 
+		'<:encoding(UTF-8)', 
+		'fichero.txt';
+	\end{lstlisting}
+	Hay tres modos de trabajo: lectura \textbf{\(`<'\)}, escritura \textbf{\(`>'\)} y adición \textbf{\(`>>'\)}. Además, se puede configurar fácilmente para trabajar con distintas codificaciones de caracteres (\textbf{encoding}).
+	Para cerrar un descriptor se utiliza la función close:
+	\lstset{language=Perl, showspaces=false, showstringspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	close descriptor;
+	\end{lstlisting}
+	La lectura de fichero (o de otros tipos de entrada, como puede ser por teclado) se realiza rodeando la variable descriptor entre `\textless\textgreater':
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	while(<file_descriptor>){
+		chomp;
+		...
+	}
+	\end{lstlisting}
+	La escritura se puede realizar con la función print, especificando el descriptor en la misma:
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	print file_descriptor "3.1415";
+	\end{lstlisting}
+	Por defecto, a la hora de mostrar o introducir información, se cuenta con los descriptores STDIN, STDOUT y STDERR, para entrada por teclado y salida por el buffer estándar y el de errores. Es posible modificar el comportamiento de los mismos, haciendo que operen sobre otro dispositivo o fichero.
+	\section{El operador diamante `\textless \textgreater'}
+	Con el objetivo de que Perl pudiera integrarse fácilmente con el resto de comandos de UNIX se implementó esta funcionalidad en el lenguaje. Al pasarse nombres de ficheros como argumentos en la invocación de un programa, se crea un descriptor que queda almacenado en la variable \textbf{\textless\textgreater}, recorriendo la lista de ficheros los procesamos.
+	\section{@ARGV}
+	@ARGV trabaja de la misma forma que la variable homónima en C, almacenando una lista de las cadenas de texto pasadas por línea de comandos. La única diferencia es que el elemento en el valor 0 no contiene el nombre del programa, sino el primer argumento.
+	\section{Modificar el comportamiento de \textless{}STDIN\textgreater{} y \textless{}STDOUT\textgreater}
+	Con los operadores '\textless' y '\textgreater' podemos modificar el flujo de entrada y salida estándar del programa:
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	./proceso <fich1 >fich2
+	\end{lstlisting}
+	Al leer de \textless{}STDIN\textgreater{}  se recogerá información de fich1 y si se envía información a \textless{}STDOUT\textgreater{} se escribirá en fich2.
+	\section{Trabajo con tuberías (pipelines)}
+	No hay mucho que decir sobre la utilización de \textit{pipelines} en Perl, dado que su funcionamiento es idéntico al del resto de comandos de UNIX.
+	\section{Directorios}
+	El punto de inicio de un programa de perl es el directorio de trabajo, que es el lugar desde el que se inició el programa. \textbf{chdir} permite movernos por el árbol de directorios del sistema.
+	Desde el propio lenguaje se puede trabajar con el árbol de ficheros del sistema. Las operaciones \textbf{unlink}, \textbf{symlink}, \textbf{mkdir}, \textbf{chmod} o \textbf{utime} están integradas por defecto.
+	\chapter{Estructuras de datos avanzadas}
+	\section{Hash}
+	\paragraph
+	Un hash es una estructura de datos que contiene un número indefinido de elementos de acceso aleatorio. La diferencia fundamental con un array es la indexación de los elementos, que se realiza utilizando nombres únicos en vez de números, además, el conjunto de claves no se considera ordenado, los valores se disponen en la estructura según el orden de adición a la misma. Siguiendo el principio de `no hay límites si no es necesario', un hash puede tener una longitud infinita. Además, se puede utilizar cualquier tipo de clave (número, valores \textbf{undef}, strings, etcétera), dado que todos ellos serán siempre de tipo escalar. Los hashes son muy útiles a la hora de relacionar un valor con otro (hostname con IP, usuario con información del mismo, etcétera).
+	Declaración de un hash:
+	\begin{lstlisting}[frame=single, showspaces=false]
+	$clientes{'pedro'}='12583';
+	$clientes{'marta'}='48393';
+	\end{lstlisting}
+	Para acceder a los elementos de un hash se realiza de la misma forma:
+	\begin{lstlisting}[frame=single, showspaces=false, showstringspaces=false]
+printf "Pedro == %d", $clientes{'pedro'};
+	\end{lstlisting}
+	Para referirnos al hash al completo utilizamos el operador \%. Es posible convertir un hash a una lista de forma automática, si bien no se garantiza el orden de los elementos.
+	Las funciones key y values devuelven listas con las claves y elementos del hash.
+	Las función exists verifica si existe una clave dentro del hash. La función delete elimina una entrada de la estructura.
+	Es posible asignar un hash a otro utilizando el operador de asignación típico (`='), así como utilizar manipuladores de arrays como reverse.
+	Para hacer más fácil la lectura de un código, el operador =\textgreater permite representar la correspondencia clave-valor:
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	%hitchhikers= ('Arthur' => 'human', 
+	'Ford' => undef, 
+	'Marvin' => 'robot', 
+	'Trillian' => 'human', 
+	'Zaphod' => undef);
+	\end{lstlisting}
+	\lstset{language=Perl, showspaces=false}
+	%¿ENV variables?
+	\chapter{Expresiones regulares}
+	\paragraph
+	Las expresiones regulares son una de las prestaciones que diferencia a Perl de otros lenguajes. Es una característica del lenguaje que permite un procesamiento de cadenas de texto de forma sencilla y potente. Llamadas oficialmente \textit{patrones}, son encontradas en otros programas como \textit{sed}, \textit{awk} o \textit{grep}.
+	Para trabajar con expresiones regulares rodeamos las mismas con `//'
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	$_ = "yabba dabba doo";
+	if (/abba/) {
+		print "Coincide!\n"; 
+	}
+	\end{lstlisting}
+	Opciones avanzadas para trabajar con expresiones regulares incluyen:
+	\begin{itemize}
+	\item Metainformación de caracteres
+	\subitem Podemos referirnos a un determinado conjunto de caracteres con la expresión \verb+\+p\{\}, indicando el nombre de un subconjunto entre los corchetes:
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	if(/\p{Digit}/){
+		print "La cadena coincide";
+	}
+	\end{lstlisting}
+	Hay varios subconjuntos predefinidos, como Space, Hex, Digit\footnote{La lista completa se encuentra disponible en http://perldoc.perl.org/perluniprops.html}.
+	\item Patrones que se repiten
+	\subitem Los operadores * y . permiten referirnos a un número cualquiera de caracteres de cualquier tipo. . representa un único carácter de cualquier tipo excepto el de nueva línea. + funciona de la misma forma que *, pero requiere al menos de un elemento.
+	\item Caracteres especiales
+	\subitem
+	\verb+\t+, \verb+\n+ para tabulado, nueva línea, etc
+	\item Agrupación de caracteres con ()
+	\end{itemize}
+	%Examples
+	\section{Algunas opciones avanzadas utilizando expresiones regulares}
+	\begin{itemize}
+	\item /i: Caracter en mayúsculas o minúsculas.
+	\item /s: Cualquier carácter (incluso el retorno de carro).
+	\item /x: Permite añadir espacios en blanco en la expresión regular sin que afecten a la misma, con el propósito de hacer más legible la cadena.
+	\lstset{language=Perl, showspaces=false}
+	\begin{lstlisting}[frame=single, showspaces=false]
+	/-?[0-9]+\.?[0-9*]/
+	/-? [0-9]+ \.? [0-9*] /x/
+	\end{lstlisting}
+	\item /a, /u, /l para utilizar codificación ASCII, Unicode o la configuración local.
+	\item Se pueden combinar opciones dentro de las opciones de una expresión simplemente escribiendo todas juntas tras /: /is.
+	\end{itemize}
+	Esta opción es muy útil para incluir comentarios dentro de la expresión. Perl considera un comentario como un espacio, por lo que utilizando /x son ignorados.
+	\section{Expresiones regulares flexibles}
+	En ocasiones se puede admitir que una cadena de caracteres coincida con un fragmento de la expresión regular, utilizando los especificadores /A y /z para el principio y final de la cadena.
+	\section{Manipulación de cadenas de caracteres}
+	\subsection{La función index}
+	La función index toma dos parámetros, el primero indica la cadena sobre la que se realizará la búsqueda, y el segundo el patrón de búsqueda. Retorna el índice de la primera ocurrencia de la subcadena o -1. Un tercer argumento opcional indica la posición dentro de la cadena desde la que buscar.
+	\subsection{La función substr}
+	Esta función toma una parte de una cadena y la retorna como variable escalar.
+	%Example pg 260
+	\subsection{sprintf}
+	Esta función toma los mismos argumentos que printf pero retorna la cadena en vez de escribirla en una manejadora (por lo que no se incluirá nunca el argumento opcional de descriptor de fichero)
+	\subsection{Comparación inteligente}
+	Utilizando el operador \verb+~~+ es posible determinar qué tipo de comparación se debe realizar basándose en el contexto de los argumentos utilizados.
+	\chapter{Módulos de Perl y CPAN}
+	\paragraph
+	Los módulos de Perl son componentes ya desarrollados y probados que dan soluciones a problemas comunes y rutinarios ahorrando a otros programadores el proceso de programación y prueba de los mismos.
+	Varios módulos se encuentran instalados por defecto en la distribución de Perl de los equipos. En caso de que no sea así, CPAN (\textit{Comprehensive Perl Archive Network}) es un repositorio de gran utilidad donde se pueden encontrar módulos que resuelven gran cantidad de las tareas a las que un desarrollado se enfrenta cada día. Además, el contenido existente en CPAN se encuentra en constante desarrollo y mejora.
+	\paragraph
+	A la hora de instalar módulos, se puede utilizar uno de ellos, cpan (suele ser incluido en las instalaciones estándar de perl), que se encarga de obtener los componentes requeridos (incluso de descargar aquellos que sean necesarios para que el módulo deseado funcione) y de instalarlos en los directorios dispuestos a tal efecto\footnote{No es el único gestor de módulos disponible, cpanm es un cliente de CPAN más ligero que no requiere configuración.}. La extensión de un módulo de Perl es .pm.
+	Ejemplos de módulos populares (y no incluidos en la distribución estándar de perl):
+	\begin {itemize}
+	\item \textbf{DateTime}: manejo de tiempo y fechas.
+	\item \textbf{DBI}: acceso a bases de datos.
+	\item \textbf{File::Basename}: Permite representar rutas de fichero de forma compatible con cualquier sistema operativo.
+	\item \textbf{CGI.pm} Programas que utilizan la Common Gateway Interface.
+	%Complete
+	\end{itemize}
+	\section{Instalación de módulos}
+	Generalmente los desarrolladores se apoyan en los módulos MakeMaker o Build para la instalación de componentes nuevos. Tan solo es necesario descargar la distribución, desempaquetarla y ejecutar los comandos que vengan indicados en la documentación del módulo (generalmente se utilizará un script Makefile.pl o Build.pl).
+	CPAN es capaz de resolver dependencias entre módulos, instalando aquellos que sean necesarios para que un paquete funcione correctamente.
+	Tras la instalación de los módulos, con use los incluiremos en un programa.
+%Fatal errors page 121
+	\chapter{Gestión de procesos}
+	Perl incluye la gestión de procesos hijos derivados de un script. Tiene muchas características de la forma de trabajo de los sistemas UNIX, por lo que la flagrante portabilidad de Perl se ve reducida en este punto.
+	La función system invoca comandos del sistema operativo, pudiendo utilizar argumentos y variables del propio programa. Además permite la entrada de texto.
+	Al invocarse la función system se crea un proceso hijo con los valores del original (semejante a \textit{fork} en UNIX), que adopta un comportamiento nuevo inmediatamente. El proceso padre se pausa sin consumir tiempo de CPU hasta que el proceso hijo finaliza. Para evitar esto, se puede utilizar el ampersand tal y como se realiza en Bourne shell.
+	Perl intenta evitar invocar la shell, y es posible garantizar que será así invocando la función \textbf{system} con varios argumentos, el nombre del comando por un lado y una lista de argumentos para el mismo separados por comas.
+	Utilizando \verb+`<comando>`+ se captura la salida de un comando en una variable. 
+	\subsection{La función exec}
+	A diferencia de system, exec no crea un proceso hijo, si no que provoca que el proceso original adopte el comportamiento del comando solicitado\footnote{Tal y como ocurre en UNIX.}.
+	\subsection{Variables de entorno}
+	Puede ocurrir que sea necesario modificar alguna de las variables de entorno de un comando antes de ejecutarlo. Para ello, se utiliza el hash \%ENV.
+	Con delete eliminaríamos una variable de entorno.
+	\subsection{Procesamiento concurrente}
+	Es posible hacer que Perl trabaje con procesos síncronos, vinculando la ejecución de los mismos a una manejadora con el comando open.
+	\subsection{Use the fork, Luke}
+	Tal y como en la API de UNIX, al utilizar la función fork se crea un proceso hijo idéntico a su progenitor.
+	\begin{lstlisting}[frame=single, showspaces=false]
+defined(my $pid = fork) or die "Fallo: $!"; 
+     unless ($pid) {# El proceso hijo 'date';
+     die "cannot exec date: $!";
+	}
+	# El proceso padre ($pid, 0);
+	\end{lstlisting}
+	
+	\subsection{Señales}
+	Utilizando \verb+$SIG{'<nombre de la señal>' = funcion_manejadora}+ modificamos el comportamiento estándar de las mismas.
+	%use strict, use warnings
+	%Code example pg 287.
+	\end{document}
